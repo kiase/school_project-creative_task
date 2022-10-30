@@ -45,6 +45,7 @@ function setup() {
   video.size(displayWidth,displayHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
+  fullscreen(true);
 }
 
 function draw() {
