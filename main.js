@@ -60,8 +60,12 @@ function draw() {
 
 function mousePressed() {
   if(block!=true){
+    block=true;
     gate.classify(video, gotResult);
   }
+  sleep(1000).then(function(){
+      block = false;
+    });
 }
 
 function gotResult(err, result){
