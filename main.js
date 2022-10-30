@@ -42,14 +42,13 @@ function setup() {
   video = createCapture(constraints);
   
   video.hide();
-  video.size(windowWidth,windowHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
 }
 
 function draw() {
   background(255);
-  image(video, 0, 0);
+  image(video, 0, 0, width, width * video.height / video.width);
   fill(0);
   strokeWeight(3);
   stroke('#ffffff');
@@ -60,7 +59,6 @@ function draw() {
 
 function windowResized(){
   resizeCanvas(windowWidth,windowHeight);
-  video.size(windowWidth,windowHeight);
 }
 
 function mousePressed() {
