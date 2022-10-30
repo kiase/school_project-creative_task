@@ -49,7 +49,7 @@ function setup() {
 
 function draw() {
   background(255);
-  image(video, 0, 0);
+  image(video, 0, 0, width, width * video.height / video.width);
   fill(0);
   strokeWeight(3);
   stroke('#ffffff');
