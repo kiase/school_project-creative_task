@@ -45,12 +45,14 @@ function setup() {
   video.size(displayWidth,displayHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
-  fullscreen(true);
 }
 
 function draw() {
   background(255);
   image(video, 0, 0, width, width * video.height / video.width);
+  if(!fullscreen()){
+    fullscreen(true);
+  }
   fill(0);
   strokeWeight(3);
   stroke('#ffffff');
