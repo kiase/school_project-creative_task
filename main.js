@@ -32,7 +32,7 @@ function sleep(millisecondsDuration) {
 }
 
 function setup() {
-  createCanvas(displayWidth,displayHeight);
+  createCanvas(windowWidth,windowHeight);
   var constraints = {
     audio: false,
     video: {
@@ -42,23 +42,25 @@ function setup() {
   video = createCapture(constraints);
   
   video.hide();
-  video.size(displayWidth,displayHeight);
+  video.size(windowWidth,windowHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
 }
 
 function draw() {
   background(255);
-  image(video, 0, 0, width, width * video.height / video.width);
-  if(!fullscreen()){
-    fullscreen(true);
-  }
+  image(video, 0, 0);
   fill(0);
   strokeWeight(3);
   stroke('#ffffff');
   textSize(30);
   textAlign(CENTER);
   text(utterance, width/2, height-40);
+}
+
+function windowResized(){
+  resizeCanvas(windowWidth,windowHeight);
+  video.size(windowWidth,windowHeight);
 }
 
 function mousePressed() {
