@@ -62,7 +62,7 @@ function draw() {
     stroke('#ffffff');
     textSize(30);
     textAlign(CENTER);
-    if (width * video.height / video.width + 80 >= height) {
+    if (width * video.height / video.width + 60 >= height) {
         text(utterance, width / 2, width * video.height / video.width - 60);
     }
     else {
