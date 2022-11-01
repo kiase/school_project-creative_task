@@ -60,7 +60,11 @@ function draw() {
     fill(0);
     strokeWeight(3);
     stroke('#ffffff');
-    textSize(height/10);
+    if(height>=width){
+      textSize(width/10);
+    }else{
+      textSize(height/10);
+    }
     textAlign(CENTER);
     if (width * video.height / video.width + 80 >= height) {
         text(utterance, width / 2, width * video.height / video.width - 40);
