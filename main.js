@@ -42,7 +42,6 @@ function setup() {
   video = createCapture(constraints);
   
   video.hide();
-  video.size(windowWidth,windowHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
 }
@@ -61,7 +60,7 @@ function draw() {
     fill(0);
     strokeWeight(3);
     stroke('#ffffff');
-    textSize(30);
+    textSize(height/10);
     textAlign(CENTER);
     if (width * video.height / video.width + 80 >= height) {
         text(utterance, width / 2, width * video.height / video.width - 40);
@@ -73,7 +72,6 @@ function draw() {
 
 function windowResized(){
   resizeCanvas(windowWidth,windowHeight);
-  video.size(windowWidth,windowHeight);
 }
 
 function mousePressed() {
