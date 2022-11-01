@@ -42,33 +42,48 @@ function setup() {
   video = createCapture(constraints);
   
   video.hide();
+  video.size(windowWidth,windowHeight);
   model.classify(video, dummy);
   gate.classify(video, dummy);
 }
 
+
 function draw() {
-  background(255);
-  image(video, 0, 0, width, width * video.height / video.width);
-  fill(0);
-  strokeWeight(3);
-  stroke('#ffffff');
-  textSize(30);
-  textAlign(CENTER);
-  text(utterance, width/2, height-40);
+    background(255);
+    image(video, 0, 0, width, width * video.height / video.width);
+    noFill();
+    stroke('#c8c8ff');
+    strokeWeight(30);
+    rect(0, 0, width, width * video.height / video.width);
+    fill(255);
+    strokeWeight(0);
+    rect(0, width * video.height / video.width, width, height);
+    fill(0);
+    strokeWeight(3);
+    stroke('#ffffff');
+    textSize(30);
+    textAlign(CENTER);
+    if (width * video.height / video.width + 80 >= height) {
+        text(utterance, width / 2, width * video.height / video.width - 40);
+    }
+    else {
+        text(utterance, width / 2, width * video.height / video.width + 40);
+    }
 }
 
 function windowResized(){
   resizeCanvas(windowWidth,windowHeight);
+  video.size(windowWidth,windowHeight);
 }
 
 function mousePressed() {
-  if(block!=true){
-    block=true;
-    gate.classify(video, gotResult);
-  }
-  sleep(1000).then(function(){
-      block = false;
-    });
+    if (block != true) {
+        block = true;
+        gate.classify(video, gotResult);
+        sleep(1000).then(function () {
+            block = false;
+        });
+    }
 }
 
 function gotResult(err, result){
