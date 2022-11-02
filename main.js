@@ -104,6 +104,7 @@ function mousePressed() {
   });
 }
 
+/* OCR을 이용한 유통기한 읽어주기 (인식률 문제로 비활성화)
 function mouseDragged() {
   drag +=1;
   ocrr=true;
@@ -123,6 +124,7 @@ function mouseReleased() {
     drag=0;
   }
 }
+*/
 
 function gotResult(err, result){
   if(result[0].label=="False.False"){
