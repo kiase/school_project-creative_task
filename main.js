@@ -61,7 +61,8 @@ function setup() {
     .then(()=>worker.setParameters(
     {tessedit_char_whitelist: CHAR_WHITELIST,}
   ));
-  sleep(1000).then(function(){rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };});
+  sleep(1000).then(function(){rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, 
+                                           width: width/5*2, height: width * video.height / video.width/5*2 };});
 }
 
 /* OCR을 이용한 유통기한 읽어주기 (인식률 문제로 비활성화)
@@ -69,7 +70,8 @@ function mouseDragged() {
   drag +=1;
   ocrr=true;
   if (drag > 15) {
-    rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };
+    rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, 
+                 width: width/5*2, height: width * video.height / video.width/5*2 };
     worker.recognize(cc.elt, {rectangle}).then(
       (arg)=>{console.log(arg.data.text);
               utterance = arg.data.text;});
