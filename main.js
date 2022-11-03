@@ -64,6 +64,48 @@ function setup() {
   sleep(1000).then(function(){rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };});
 }
 
+/* OCR을 이용한 유통기한 읽어주기 (인식률 문제로 비활성화)
+function mouseDragged() {
+  drag +=1;
+  ocrr=true;
+  if (drag > 15) {
+    rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };
+    worker.recognize(cc.elt, {rectangle}).then(
+      (arg)=>{console.log(arg.data.text);
+              utterance = arg.data.text;});
+    drag = 0;
+    sleep(1000).then(function(){ocrr=false;});
+  }
+  console.log(drag);
+}
+function mouseReleased() {
+  if(drag!=0){
+    ocrr=false;
+    drag=0;
+  }
+}
+*/
+//딥러닝 모델을 이용하여 사진 속 사물 감지
+//오류를 줄이기 위해 음료가 보이는지, 식별이 가능한지 
+//gate 모델로 판단 후, main 모델로 전송
+function gotResult(err, result){
+  if(result[0].label=="False.False"){
+    say('카메라에 음료가 보이지 않습니다. 다시 시도해주세요.');
+  }
+  else if(result[0].label=="True.False"){
+    say('음료 식별이 불가능합니다. 방향을 맞추어 다시 시도해주세요.');
+  }
+  else{
+    model.classify(video, model_gotResult);
+  }
+}
+
+//main 모델에서 감지한 결과를 TTS로 읽어주기
+function model_gotResult(err, result){
+  console.log(result[0].label);
+  say('이 음료는 '+result[0].label+'입니다.');
+}
+
 function draw() { //페이지 화면 구성
   background(255);
   stroke('#0fff0f66')
@@ -105,46 +147,4 @@ function mousePressed() {
       });
     }
   });
-}
-
-/* OCR을 이용한 유통기한 읽어주기 (인식률 문제로 비활성화)
-function mouseDragged() {
-  drag +=1;
-  ocrr=true;
-  if (drag > 15) {
-    rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };
-    worker.recognize(cc.elt, {rectangle}).then(
-      (arg)=>{console.log(arg.data.text);
-              utterance = arg.data.text;});
-    drag = 0;
-    sleep(1000).then(function(){ocrr=false;});
-  }
-  console.log(drag);
-}
-function mouseReleased() {
-  if(drag!=0){
-    ocrr=false;
-    drag=0;
-  }
-}
-*/
-//딥러닝 모델을 이용하여 사진 속 사물 감지
-//오류를 줄이기 위해 음료가 보이는지, 식별이 가능한지 
-//gate 모델로 판단 후, main 모델로 전송
-function gotResult(err, result){
-  if(result[0].label=="False.False"){
-    say('카메라에 음료가 보이지 않습니다. 다시 시도해주세요.');
-  }
-  else if(result[0].label=="True.False"){
-    say('음료 식별이 불가능합니다. 방향을 맞추어 다시 시도해주세요.');
-  }
-  else{
-    model.classify(video, model_gotResult);
-  }
-}
-
-//main 모델에서 감지한 결과를 TTS로 읽어주기
-function model_gotResult(err, result){
-  console.log(result[0].label);
-  say('이 음료는 '+result[0].label+'입니다.');
 }
