@@ -13,7 +13,7 @@ let voice = new p5.Speech();
 let block = true;
 let ocrr=false;
 
-function preload(){
+function preload(){ //딥러닝모델, OCR 로드
   say('동작 준비중입니다. 잠시만 기다려주세요.');
   model = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/CqgLmuIYo/');
   gate = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/Ct8OAvzFc/');
@@ -42,6 +42,7 @@ function sleep(millisecondsDuration) {
 
 function setup() {
   cc = createCanvas(windowWidth,windowHeight);
+  //카메라 불러오기
   var constraints = {
     audio: false,
     video: {
@@ -50,8 +51,10 @@ function setup() {
   };
   video = createCapture(constraints);
   video.hide();
+  //딥러닝 모델을 브라우저에 캐싱
   model.classify(video, dummy);
   gate.classify(video, dummy);
+  //OCR worker 로드
   worker.load()
     .then(()=>worker.loadLanguage(lng))
     .then(()=>worker.initialize(lng))
@@ -61,7 +64,7 @@ function setup() {
   sleep(1000).then(function(){rectangle = { left: width/2-width/5, top: (width * video.height / video.width)/2-(width * video.height / video.width)/5, width: width/5*2, height: width * video.height / video.width/5*2 };});
 }
 
-function draw() {
+function draw() { //페이지 화면 구성
   background(255);
   stroke('#0fff0f66')
   image(video, 0, 0, width, width * video.height / video.width);
@@ -125,7 +128,9 @@ function mouseReleased() {
   }
 }
 */
-
+//딥러닝 모델을 이용하여 사진 속 사물 감지
+//오류를 줄이기 위해 음료가 보이는지, 식별이 가능한지 
+//gate 모델로 판단 후, main 모델로 전송
 function gotResult(err, result){
   if(result[0].label=="False.False"){
     say('카메라에 음료가 보이지 않습니다. 다시 시도해주세요.');
@@ -138,6 +143,7 @@ function gotResult(err, result){
   }
 }
 
+//main 모델에서 감지한 결과를 TTS로 읽어주기
 function model_gotResult(err, result){
   console.log(result[0].label);
   say('이 음료는 '+result[0].label+'입니다.');
